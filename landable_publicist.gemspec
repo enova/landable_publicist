@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
   s.version     = LandablePublicist::VERSION
   s.authors     = ['Team Trogdor']
   s.email       = ['trogdor@enova.com']
-  s.homepage    = "TODO"
+  s.homepage    = 'https://github.com/enova/landable_publicist'
   s.summary     = 'Mountable CMS engine for Rails'
   s.description = "Landing page storage, rendering, tracking, and management FrontEnd / API"
   s.license     = 'MIT-LICENSE'
