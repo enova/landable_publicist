@@ -17,7 +17,7 @@ Gem::Specification.new do |s|
   s.files = `git ls-files`.split($/)
   s.test_files = s.files.grep(%r{^(test|spec|features)/})
 
-  s.add_dependency 'rails', '~> 4.0.0'
+  s.add_dependency 'rails', '>= 4.0.0'
   s.add_dependency 'landable', '> 1.9.0'
 
   s.add_development_dependency 'pg'
