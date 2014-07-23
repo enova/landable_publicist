@@ -1,0 +1,12 @@
+!!!
+%html
+  %head
+    %title Publicist
+    = stylesheet_link_tag    'application', media: 'all'
+    = javascript_include_tag 'application'
+    = javascript_include_tag 'publicist'
+    = csrf_meta_tags
+  %body{ class: "#{params[:controller]} #{params[:action]}", "data-current-site" => current_access_token.try(:site).try(:slug), "data-current-site-environment" => current_access_token.try(:site_environment).try(:slug) }
+    = render 'layouts/flash_messages'
+
+    = yield
