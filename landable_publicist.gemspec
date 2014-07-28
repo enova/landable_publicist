@@ -19,6 +19,8 @@ Gem::Specification.new do |s|
 
   s.add_dependency 'rails', '>= 4.0.0'
   s.add_dependency 'landable', '> 1.9.0'
+  s.add_dependency 'haml'
+
 
   s.add_development_dependency 'pg'
 end
