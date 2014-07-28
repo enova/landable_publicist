@@ -1,0 +1,31 @@
+#login.container
+  .box
+    .box-header
+      .title Log in to Publicist
+
+    .box-content.padded
+      - if flash[:error].present?
+        .alert.alert-error
+          %strong Authentication failed.
+          = flash[:error]
+      - if flash[:notice].present?
+        .alert.alert-notice
+          %strong Sorry!
+          = flash[:notice]
+
+      = form_tag '/saddsa', class: 'separate-sections' do
+        .input-prepend
+          %span.add-on
+          %input{type: 'text', placeholder: 'Author Name', name: 'username'}
+        .input-prepend
+          %span.add-on
+          %input{type: 'password', placeholder: 'Password', name: 'password'}
+
+    .credits
+      %p Brought to you by Team Trogdor.
+      %p= image_tag 'landable_publicist/trogdor-icon.png'
+
+
+:javascript
+  $('<input />').attr({type: 'hidden', name: 'hash', value: window.location.hash}).appendTo('#login form');
+  $('#login form :text:first').focus()
