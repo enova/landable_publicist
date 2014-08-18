@@ -1,0 +1,211 @@
+.container-fluid.padded
+  .header
+    .pull-left
+      ul.crumbs
+        if model.isPage
+          each parentDirectory in model.directory.parents
+            li: link-to 'directories.directory' parentDirectory
+              if parentDirectory.name
+                parentDirectory.name
+              else
+                i.fa.fa-home title="Home"
+          li.page
+            if model.isNew
+              span.muted (new page)
+            else
+              span.name: model.name
+              span.muted (editing)
+
+        else
+          li
+            if model.isTheme
+              i.fa.fa-eye
+              link-to 'themes.index' | Themes
+
+            if model.isTemplate
+              i.fa.fa-columns
+              link-to 'templates.index' | Templates
+          li
+            if name
+              span.name: name
+            span.muted
+              if isNew
+                | (new {{typeKey}})
+              else
+                | (editing)
+
+    if isPage
+      .pull-right
+        ul.toolbar
+          if isNew
+            li.muted Save to access testing features.
+          li
+            unless isNew
+              a.btn.btn-default data-toggle="modal" data-target=".page-testing-modal" Device Testing
+            else
+              a.btn.btn-default.disabled Device Testing
+          li
+            if isDirty
+              a.btn.btn-blue.disabled data-toggle="tooltip" data-placement="left" title="Save changes before copying."
+                i.fa.fa-copy
+            else
+              a.btn.btn-blue data-toggle="tooltip" data-placement="left" title="Click to copy this {{unbound model.typeKey}}." click="copy"
+                i.fa.fa-copy
+          li
+            if publishedRevision
+              a href=model.url target="_blank" class="btn btn-blue" View Live
+            else
+              a.btn.btn-blue.disabled data-toggle="tooltip" data-placement="left" title="Publish to view this page live." View Live
+
+    if isTheme
+      .pull-right
+        ul.toolbar
+          li
+            if isDirty
+              a.btn.btn-blue.disabled data-toggle="tooltip" data-placement="left" title="Save changes before copying."
+                i.fa.fa-copy
+            else
+              a.btn.btn-blue data-toggle="tooltip" data-placement="left" title="Click to copy this theme." click="copy"
+                i.fa.fa-copy
+
+    if isTemplate
+      .pull-right
+        ul.toolbar
+          li
+            if isDirty
+              a.btn.btn-blue.disabled data-toggle="tooltip" data-placement="left" title="Save changes before copying."
+                i.fa.fa-copy
+            else
+              a.btn.btn-blue data-toggle="tooltip" data-placement="left" title="Click to copy this template." click="copy"
+                i.fa.fa-copy
+
+  unless isLoaded
+    partial "loading"
+  else
+    form.form-horizontal.fill-up submit="save"
+      .box
+        .box-header
+          ul.nav.nav-tabs.nav-tabs-left
+            if model.isTheme
+              view Publicist.ActiveWrapperView
+                link-to 'theme.index' | Info
+              view Publicist.ActiveWrapperView
+                link-to 'theme.code' | Code
+              view Publicist.ActiveWrapperView
+                link-to 'theme.preview' | Preview
+
+            if model.isPage
+              view Publicist.ActiveWrapperView
+                link-to 'page.index' | Info
+              view Publicist.ActiveWrapperView
+                link-to 'page.code' | Code
+              view Publicist.ActiveWrapperView
+                link-to 'page.preview' class='preview'
+                  span Preview
+                  i.fa.fa-external-link data-toggle='tooltip' data-placement='top' title='Open preview in a new tab' data-delay='500'
+              unless isNew
+                view Publicist.ActiveWrapperView
+                  link-to 'page.revisions' | Revisions
+
+              if isPublished
+                view Publicist.ActiveWrapperView
+                  link-to 'page.audits' | Audits
+
+            if model.isTemplate
+              view Publicist.ActiveWrapperView
+                link-to 'template.index' | Info
+              view Publicist.ActiveWrapperView
+                link-to 'template.code' | Code
+              unless isNew
+                view Publicist.ActiveWrapperView
+                  link-to 'template.revisions' | Revisions
+              view Publicist.ActiveWrapperView
+                link-to 'template.audits' | Audits
+        .box-content
+          .tab-content
+            .tab-pane.active
+              outlet
+
+          .row-fluid
+            .form-actions
+              ul.span4
+                li: button.btn.btn-primary type="submit" disabled=isNotSaveable
+                  | Save
+                li: button.btn.btn-default type="reset" click="reset" disabled=isClean
+                  if isNew
+                    | Cancel
+                  else
+                    | Reset
+                li
+                  if isDirty
+                    if isValid
+                      | You have unsaved changes.
+                    else
+                      strong Please fix errors before saving.
+                  else
+                    .muted No unsaved changes.
+
+              .span4.deletion-container
+                unless isNew
+                  if isDeactivated
+                    i.fa.fa-trash-o
+                    span  This page is trashed.
+                    a data-toggle="modal" data-target="#restore-modal"
+                      |  Restore?
+                  else
+                    a data-toggle="modal" data-target="#delete-modal"
+                      i.fa.fa-trash-o
+                      |  Trash
+
+              if isPage
+                .span4.margin-left-0
+                  ul.pull-right
+                    if isDeactivated
+                      li.muted Cannot be published.
+                      li: a.btn.btn-blue.disabled Publish
+                    else
+                      if isNew
+                        li.muted Save before publishing.
+                        li: a.btn.btn-blue.disabled Publish
+                      else
+                        if isDirty
+                          li.muted Save your changes before publishing.
+                          li: a.btn.btn-blue.disabled Publish
+                        else
+                          if isPublishable
+                            li You have unpublished changes.
+                            li: a.btn.btn-blue data-toggle="modal" data-target="#page-publish-modal" Publish
+                          else
+                            li.muted There are no changes to publish.
+                            li: a.btn.btn-blue.disabled Publish
+
+              if isTemplate
+                ul.pull-right
+                  if isNew
+                    li.muted Save before publishing.
+                    li: a.btn.btn-blue.disabled Publish
+                  else
+                    if isDirty
+                      li.muted Save your changes before publishing.
+                      li: a.btn.btn-blue.disabled Publish
+                    else
+                      if isPublishable
+                        li You have unpublished changes.
+                        li: a.btn.btn-blue data-toggle="modal" data-target="#template-publish-modal" Publish
+                      else
+                        li.muted There are no changes to publish.
+                        li: a.btn.btn-blue.disabled Publish
+
+
+  if isPage
+    render page.reactivate model
+    render page.deactivate model
+    render page.publish model
+    render page.testing model
+  if isTemplate
+    render template.reactivate model
+    render template.deactivate model
+    render template.publish model
+  if isTheme
+    render theme.reactivate model
+    render theme.deactivate model

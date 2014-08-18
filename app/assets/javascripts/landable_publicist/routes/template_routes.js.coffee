@@ -1,0 +1,5 @@
+Publicist.TemplateRoute          = Publicist.EditorRoute.extend()
+Publicist.TemplateIndexRoute     = Publicist.EditorIndexRoute.extend()
+Publicist.TemplateCodeRoute      = Publicist.EditorCodeRoute.extend()
+Publicist.TemplateAuditsRoute    = Publicist.EditorSubroute.extend()
+Publicist.TemplateRevisionsRoute = Publicist.EditorSubroute.extend()

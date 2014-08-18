@@ -1,0 +1,18 @@
+#template-publish-modal.modal.hide.fade
+  .modal-header
+    a.close data-dismiss="modal" &times;
+    h4
+      | Publishing #{model.path}
+
+  .modal-body
+    form submit="publish model"
+      p <strong> Please enter a brief description of the changes made in this revision. </strong>
+      Ember.TextArea id="description" class="input-block-level" valueBinding="revision.notes"
+
+      label.checkbox
+        Ember.Checkbox value="1" checkedBinding="revision.isMinor"
+        span class={revision.isMinor::muted} This was a minor revision.
+
+  .modal-footer
+    a.btn.btn-default data-dismiss="modal" Cancel
+    button.btn.btn-primary click="publish" Publish

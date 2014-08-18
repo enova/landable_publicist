@@ -1,0 +1,12 @@
+#revision-revert-modal.modal.hide.fade
+  .modal-header
+    h4
+      | Reloading...
+
+  .modal-body
+    form submit="revertTo"
+      p This will reload revision ##{revision.ordinal} into your current draft.
+
+  .modal-footer
+    a.btn.btn-default data-dismiss="modal" aria-hidden="true" Cancel
+    button.btn.btn-primary click="revertTo" Confirm

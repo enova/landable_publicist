@@ -1,0 +1,29 @@
+.modal-header
+  a.close data-dismiss="modal" &times;
+  h3 Upload an asset
+
+.modal-body
+  .row-fluid
+    with view.asset
+      view class="control-group" classNameBindings="errors.name:error"
+        label.control-label for="asset-name"
+          | Name (spaces not allowed) &nbsp;
+          i.fa.fa-question-circle data-toggle="tooltip" title="A short name that is used to reference the theme from page bodies" data-placement="right"
+          if errors.name: span.help-inline= errors.name
+        .controls
+          Ember.TextField#asset-name.input-block-level valueBinding="name" placeholder="eg: hero-image"
+
+      view class="control-group" classNameBindings="errors.description:error"
+        label.control-label for="asset-description"
+          | Description &nbsp;
+          i.fa.fa-question-circle data-toggle="tooltip" title="What does this file contain? For images, this is the default alt text." data-placement="right"
+          if errors.description: span.help-inline= errors.description
+        .controls
+          Ember.TextField#asset-description.input-block-level valueBinding="description" placeholder="eg: Certified by So-and-So Agency"
+
+      label.control-label for="asset-file" File
+      Publicist.FileUploaderView
+
+.modal-footer
+  a.btn.btn-default data-dismiss="modal" Cancel
+  button disabled=view.uploadDisabled class={view.uploadDisabled:disabled :btn :btn-primary} Upload

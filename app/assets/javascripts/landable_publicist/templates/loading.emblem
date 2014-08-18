@@ -1,0 +1,4 @@
+/ used by LoadingRoute
+.application-loading
+  i.fa.fa-spinner.fa.fa-spin
+  h4 Hello Publicist

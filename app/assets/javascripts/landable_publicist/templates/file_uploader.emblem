@@ -1,0 +1,26 @@
+.fileupload
+  .row-fluid
+    .input-append
+      .uneditable-input.span4
+        i class=view.icon
+        span.fileupload-filename= view.filename
+
+      span.btn.btn-file.btn-default
+        | Browse
+        Ember.TextField#asset-file type="file"
+
+  if view.hasFile: .row-fluid
+    .metadata.span4
+      dl
+        dt Type
+        dd= view.asset.mimeType
+
+        if view.asset.isImage
+          dt Dimensions
+          dd {{view.imageWidth}} x {{view.imageHeight}} px
+
+        dt File Size
+        dd= humanizeFileSize view.asset.fileSize
+
+    if view.asset.isImage: .thumbnail.span8
+      img src=view.dataURL alt=view.asset.description

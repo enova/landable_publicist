@@ -1,0 +1,20 @@
+.padded
+  .row-fluid
+    view class="control-group" classNameBindings="errors.name:error"
+      label.control-label for="theme-name"
+        | Name
+        if errors.name: span.help-inline= errors.name
+      .controls
+        Ember.TextField#theme-name.input-block-level valueBinding="name" tabindex=1
+
+    view class="control-group" classNameBindings="errors.description:error"
+      label.control-label for="theme-description"
+        | Description
+        if errors.description: span.help-inline= errors.description
+      .controls
+        Ember.TextArea#theme-description.input-block-level valueBinding="description" tabindex=2
+
+    view class="control-group"
+      label.control-label for="theme-thumbnail-url" Thumbnail URL
+      .controls
+        Ember.TextField#theme-thumbnail-url.input-block-level valueBinding="thumbnailUrl" tabindex=3

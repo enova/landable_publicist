@@ -1,0 +1,9 @@
+link-to 'template' this class="page"
+  if isDeactivated
+    span.icon.trash: i.fa.fa-eye-slash data-toggle="tooltip" title="Trashed"
+
+  span.path
+    if name
+      = name
+    else
+      span.muted (index template)

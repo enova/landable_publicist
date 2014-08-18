@@ -1,0 +1,6 @@
+Publicist.PageRoute          = Publicist.EditorRoute.extend()
+Publicist.PageIndexRoute     = Publicist.EditorIndexRoute.extend()
+Publicist.PageCodeRoute      = Publicist.EditorCodeRoute.extend()
+Publicist.PagePreviewRoute   = Publicist.EditorPreviewRoute.extend()
+Publicist.PageRevisionsRoute = Publicist.EditorSubroute.extend()
+Publicist.PageAuditsRoute    = Publicist.EditorSubroute.extend()

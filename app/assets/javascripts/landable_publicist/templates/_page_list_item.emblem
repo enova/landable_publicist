@@ -1,0 +1,26 @@
+link-to 'page' this class="page"
+
+  if isLoaded
+    if isDeactivated
+      span.icon.trash: i.fa.fa-eye-slash data-toggle="tooltip" title="Trashed"
+    else
+      if isRedirect
+        span.icon.redirect: i.fa.fa-arrow-circle-right data-toggle="tooltip" title=statusCode.code
+      if isMissing
+        span.icon.missing: i.fa.fa-minus-circle data-toggle="tooltip" title=statusCode.code
+      if isOkay
+        span.icon.okay: i.fa.fa-check-circle data-toggle="tooltip" title=statusCode.code
+
+
+  span.path
+    if isLoaded
+      if name
+        = name
+      else
+        span.muted (index page)
+      if isRedirect
+        span.redirect
+          i.fa.fa-angle-right
+          span.url = redirectUrl
+    else
+      | ...

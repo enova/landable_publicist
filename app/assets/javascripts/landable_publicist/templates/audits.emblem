@@ -1,0 +1,41 @@
+.padded
+  .basics
+    fieldset
+      .row-fluid
+        if audits
+          table.table.table-striped.revisions
+            thead
+              tr
+                th Date Created
+                th Type of Audit
+                th Author
+                th Notes
+                th Flags
+            tbody
+              each audit in audits
+                if audit.approver
+                  tr
+                    td.span2
+                      |  #{audit.createdAtReadableShort}
+                    td.span2.type-of-audit
+                      if audit.isPage
+                        link-to 'page' audit.auditable
+                          | #{audit.auditableType}
+                      else
+                        link-to 'template' audit.auditable
+                          | #{audit.auditableType}
+                    td.span2
+                      | Approved
+                      span  by #{audit.approver}
+                    td.span2
+                      if audit.notes
+                        | #{audit.notes}
+                    td.span2
+                      if audit.flags
+                        | #{audit.flags}
+                      else
+                        | No Flags!
+        else
+          p
+            .no-audits
+              | No Audits yet!

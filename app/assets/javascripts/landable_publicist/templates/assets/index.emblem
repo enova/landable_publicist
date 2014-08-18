@@ -1,0 +1,62 @@
+.assets.index: .container-fluid.padded
+  .header
+    .pull-left
+      ul.crumbs
+        li
+          i.fa.fa-hdd
+          link-to 'assets.index' | Assets
+
+    .pull-right
+      ul.toolbar
+        li
+          form.navbar-search
+            Ember.TextField valueBinding="searchTerm" class="search-query animated" placeholder="Search ..."
+            i.fa.fa-search
+        li: a href="#asset-upload-modal" data-toggle="modal" class="btn btn-blue" Upload
+
+  .box: .box-content.list-filter-box
+    ul.list-filters
+      li
+        Publicist.Select selectElementId="sort-assets" contentBinding="Publicist.Asset.SORTS" valueBinding="sortProperty" prompt="(default sort)"
+
+      if sortProperty
+        li
+          .toggle data-toggle="tooltip" title="Toggle sort direction" click="toggleSortDirection"
+            if sortAscending
+              i.fa.fa-sort-amount-asc
+            else
+              i.fa.fa-sort-amount-desc
+
+      li
+        label title="Show images" class=filters.isImage::muted
+          view Ember.Checkbox checkedBinding=filters.isImage
+          span class={:icon filters.isImage:image}
+            i.fa.fa-camera
+      li
+        label title="Show documents" class=filters.isDocument::muted
+          view Ember.Checkbox checkedBinding=filters.isDocument
+          span class={:icon filters.isDocument:document}
+            i.fa.fa-print
+      li
+        label title="Show others" class=filters.isOther::muted
+          view Ember.Checkbox checkedBinding=filters.isOther
+          span class={:icon filters.isOther:other}
+            i.fa.fa-file
+
+    collection Publicist.ListView contentBinding="arrangedContent" class="asset-list" emptyTemplate="No assets to show."
+      link-to 'asset' this
+        span.asset.row-fluid
+          span.summary.span4
+            span.icon: i class=iconName
+            name
+
+            if description
+              | &nbsp;<span class="muted">({{description}})</span>
+
+          span.created.span2= relativeTime createdAt
+          span.mime.span1= mimeType
+          span.filesize.span1= humanizeFileSize fileSize
+          span.usage.span2
+            | {{pluralize themes.length s="theme"}}, {{pluralize pages.length s="page"}}
+
+Publicist.AssetUploadModal

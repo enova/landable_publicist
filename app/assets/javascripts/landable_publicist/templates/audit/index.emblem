@@ -1,0 +1,34 @@
+.padded
+  button type="button" class="btn btn-default btn-small" data-toggle="modal" data-target="#audit-modal" Conduct a New Audit!
+  if model.auditsForModel.isPending
+    partial "loading"
+  else
+    if auditsForModel
+      table.table.table-striped.revisions
+        thead
+          tr
+            th Author
+            th Notes
+            th Flags
+            th Date Created
+        tbody
+          each audit in auditsForModel
+            tr
+              td.span2
+                if audit.approver
+                  | Approved
+                  span  by #{audit.approver}
+              td.span2
+                | #{audit.notes}
+              td.span2
+                if audit.flags
+                  | #{audit.flags}
+                else
+                  | No Flags!
+              td.span2
+                |  #{audit.createdAtReadableShort}
+    else
+      p
+        .no-audits
+          | No Audits yet!
+

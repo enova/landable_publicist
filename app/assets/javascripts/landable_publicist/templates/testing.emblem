@@ -1,0 +1,17 @@
+div class="{{unbound typeKey}}-testing-modal testing-modal modal modal-wide hide fade" data-id=id
+  .modal-header
+    button type="button" class="close" data-dismiss="modal" aria-hidden="true" &times;
+    h3 Device Testing
+
+  .modal-body
+    .row-fluid
+      .span7
+        h5 Preview URL <small>(public, shareable)</small>
+        p: a href=previewUrl target="_blank" = previewUrl
+        p.muted Use the URL above to view this page in any browser.
+
+      .span5
+        dl
+          h5 QR Code
+          Publicist.QRCodeView valueBinding=previewUrl
+          p.muted Scan the QR code to view on mobile devices.

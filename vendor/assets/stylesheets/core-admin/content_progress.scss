@@ -1,0 +1,39 @@
+//defines the small progress bars
+
+@import "compass";
+@import "variables";
+@import "mixin_helpers";
+@import "bootstrap/mixins";
+
+@mixin progress-bar($name, $color) {
+
+  &.progress-#{$name} {
+    .bar {
+      @include gradient-vertical(lighten($color, 10), $color);
+      border: 1px solid darken($color, 5);
+    }
+
+    &.progress-striped {
+      .bar {
+        @include gradient-striped(lighten($color, 10));
+      }
+    }
+  }
+
+}
+
+.progress {
+  height: 8px;
+  @include border-radius(8px);
+  background: #eee;
+  @include box-shadow(0 1px 0 white, 0 0px 0 1px rgba(0,0,0,.1) inset, 0 1px 4px rgba(0,0,0,.2) inset);
+
+  .bar {
+    @include border-radius(8px);
+    @include box-shadow(none);
+  }
+
+  @each $pair in $barColors {
+    @include progress-bar(nth($pair, 1), nth($pair, 2));
+  }
+}
