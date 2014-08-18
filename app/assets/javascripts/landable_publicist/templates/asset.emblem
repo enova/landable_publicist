@@ -1,0 +1,54 @@
+.padded
+  .header
+    .pull-left
+      ul.path-browser.crumbs
+        li
+          i.fa.fa-hdd
+          link-to 'assets' | Assets
+        li: name
+
+  .box
+    form submit="save"
+      .box-content.padded
+        .row-fluid
+          .preview.span4
+            .thumbnail: img src=previewUrl
+            p.pull-right: a href=previewUrl class="btn btn-default" Download
+
+          .details.span4
+            p Details: {{mimeType}}, {{humanizeFileSize fileSize}}
+            p Uploaded {{relativeTime createdAt}} by {{author.fullName}} ({{author.username}})
+
+            dl
+              if themes
+                dt Used in {{pluralize themes.length s="theme"}}:
+                each themes
+                  dd: link-to 'theme' this
+                    = name
+              else
+                dt.muted Not used in any themes
+
+              if pages
+                dt Used in {{pluralize pages.length s="page"}}:
+                each pages
+                  dd: link-to 'page' this
+                    = path
+              else
+                dt.muted Not used in any pages
+
+          .control-group.span4
+            view class="control-group"
+              label.control-label for="asset-description"
+                | Description
+                i.fa.fa-question-circle data-toggle="tooltip" data-placement="top" title="What does this file contain? For images, this is the default alt text."
+                if errors.asset.description: span.help-inline= errors.asset.description
+              .controls
+                Ember.TextField#asset-description.input-block-level valueBinding="description"
+
+            .asset-form-actions
+              ul
+                li: button.btn.btn-primary type="submit" disabled=isNotSaveable
+                  | Save
+                li: button.btn.btn-default type="reset" click="reset" disabled=isNotSaveable
+                  | Reset
+

@@ -1,0 +1,10 @@
+.container-fluid: .row-fluid: .area-top.clearfix
+  .pull-left.header
+    h3.title
+      i.fa.fa-dashboard
+      | Dashboard
+    h5 Subtitle
+
+.container-fluid.padded
+  | Welcome to Publicist.
+  outlet

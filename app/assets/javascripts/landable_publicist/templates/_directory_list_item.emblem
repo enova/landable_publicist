@@ -1,0 +1,7 @@
+link-to 'directories.directory' this class="directory"
+  span.icon: i.fa.fa-folder
+  span.path
+    if isLoaded
+      = name
+    else
+      | ...

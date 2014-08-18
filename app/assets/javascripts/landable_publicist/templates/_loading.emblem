@@ -1,0 +1,3 @@
+.padded.message-loading: p
+  i.fa.fa-spinner.fa.fa-spin
+  | Loading...

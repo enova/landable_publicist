@@ -1,0 +1,88 @@
+.code
+  div class={view.showLayouts:blur :code-tools :pull-right}
+    unless view.readOnly
+      h6 Assets
+
+      .assets-upload-target
+        | Drag in a file to upload. Or, <span class="assets-browse"><a>browse</a><input type="file" /></span> for a file.
+
+      input#assets-search-term.assets-search-term type="text" placeholder="Search for an asset..." data-toggle="panel"
+
+      h6
+        | Templates
+        i.fa.fa-question-circle data-toggle="tooltip" data-placement="left" data-html="true" data-container="body" title="Insert a <strong>{% template %}</strong> tag to dynamically load the template when the page is viewed. Insert <strong>&amp;lt;html&amp;gt;</strong> to copy in the template's HTML itself."
+
+      ul.templates
+        each template in availableTemplates
+          if template.isPublished
+            unless template.isDeactivated
+              li.template
+                div.name = template.name
+                div.insert.muted
+                  span Insert:
+                  a.liquid data-code="{% template {{unbound template.slug}} %}" {% template %}
+                  if template.editable
+                    a.html data-code=template.body &lt;html&gt;
+
+      if isPage
+        p.muted: <a class="start-over">Start over</a> with a new layout, or check out #{link-to 'templates' | other templates}.
+
+      if isTheme
+        h6 Tags
+
+        ul.tags.nav.nav-pills
+          each tag in availableTags
+            li
+              a title=tag.description data-code=tag.code data-toggle="tooltip" data-placement="left" = tag.code
+
+    h6 Editor Options
+    .editor-options
+      .font-size
+        .muted Size
+        Publicist.Select selectElementId="editor-font-size" contentBinding="Publicist.AceInputView.fontSizeOptions" valueBinding="view.fontSize"
+      .keybindings
+        .muted Key Bindings
+        Publicist.Select selectElementId="editor-key-binding" contentBinding="Publicist.AceInputView.keybindingOptions" valueBinding="view.keybinding"
+      .theme
+        .muted Theme
+        Publicist.Select selectElementId="editor-theme" contentBinding="Publicist.AceInputView.themeOptions" valueBinding="view.theme"
+      .completion
+        .muted Code Completion
+        Publicist.Select selectElementId="editor-code-completion" contentBinding="Publicist.AceInputView.behaviourOptions" valueBinding="view.behavioursEnabled"
+
+  if view.showLayouts
+    .code-layouts
+      p.lead <strong>To get started</strong>, choose a layout:
+
+      ul.thumbnails
+        li.thumbnail data-template=''
+          span.image
+          span.meta
+            span.name Blank
+            span.description Clean slate.
+
+        each template in availableTemplates
+          if template.isLayout
+            li.thumbnail data-template=template.body
+              span.image
+                img src=template.thumbnailUrl
+              span.meta
+                span.name = template.name
+                span.description = template.description
+
+      unless view.controller.model.isNew
+        p: <btn class="btn btn-default cancel-changes">Cancel</btn>
+
+  div class={view.showLayouts:blur :code-editor}
+    if view.readOnly
+      .alert
+        h6 Uneditable
+        p Code for this {{typeKey}} is read only.
+        p #{model.description}
+
+    if errors.body: span.help-inline.body-error Page code {{errors.body}}
+    Publicist.AceInputView valueBinding="body" contentTypeBinding="pathExtension" fontSizeBinding="view.fontSize" themeBinding="view.theme"keybindingBinding="view.keybinding" modeBinding="view.mode" readOnlyBinding="view.readOnly" behavioursEnabledBinding="view.behavioursEnabled"
+
+
+render asset_panel model
+Publicist.AssetUploadModal

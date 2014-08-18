@@ -1,0 +1,2 @@
+render audit.index controller
+render audit.new controller

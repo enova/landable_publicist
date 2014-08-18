@@ -1,0 +1,120 @@
+.padded
+  .basics
+    fieldset
+      .row-fluid
+        .span6
+          view class="control-group" classNameBindings="errors.path:error"
+            label.control-label for="page-path"
+              | Path
+              if errors.path: span.help-inline= errors.path
+            .controls
+              if isNew
+                Ember.TextField#page-path.input-block-level valueBinding="path" placeholder="Path (e.g. /seo/payday)"
+              else
+                Ember.View#page-path-set.input-block-level
+                  path
+
+          view class="control-group" classNameBindings="errors.title:error"
+            label.control-label for="page-title"
+              | Title
+              if errors.title: span.help-inline= errors.title
+            .controls
+              Ember.TextField#page-title.input-block-level valueBinding="title" placeholder="Title"
+
+          view class="control-group" classNameBindings="errors.category:error"
+            label.control-label for="page-category"
+              | Category
+              if errors.category: span.help-inline= errors.category
+            .controls
+              Publicist.Select class="input-block-level" selectElementId="page-category" contentBinding="availableCategories" optionValuePath="content.id" optionLabelPath="content.name" valueBinding="categoryId"
+
+          view class="control-group" classNameBindings="errors.statusCode:error"
+            label.control-label for="page-statusCode"
+              | Status Code
+              if errors.statusCode: span.help-inline= errors.statusCode
+            .controls
+              Publicist.Select class="input-block-level" selectElementId="page-status-code" contentBinding="Publicist.Page.statusCodes" optionValuePath="content.code" optionLabelPath="content.label" valueBinding="statusCode"
+
+          view class="control-group" classNameBindings="errors.redirectUrl:error"
+            label.control-label for="page-redirectUrl"
+              | Redirect URL
+              if errors.redirectUrl: span.help-inline= errors.redirectUrl
+
+            .controls
+              Ember.TextField#page-redirectUrl.input-block-level valueBinding="redirectUrl" placeholder="Redirect to URL (e.g. http://cashnetusa.com/)"
+              if redirectUrlLooksIffy
+                p.suggestion.muted Did you mean <a {{ action applySuggestedRedirectUrl suggestedRedirectUrlWithProtocol }} on="click" id="page-suggested-redirect-url-protocol" >{{ suggestedRedirectUrlWithProtocol }}</a> or <a {{ action applySuggestedRedirectUrl suggestedRedirectUrlWithSlash }} on="click" id="page-suggested-redirect-url-slash" >{{ suggestedRedirectUrlWithSlash}}</a>?
+        .span6
+          view class="control-group" classNameBindings="errors.abstract"
+            label.control-label for="page-abstract"
+              | Abstract
+              i.fa.fa-question-circle data-toggle="tooltip" data-placement="top" title="Can be used for a page summary in page lists."
+              if errors.abstract: span.help-inline=errors.abstract
+            .controls
+              Ember.TextArea#page-abstract.input-block-level valueBinding="abstract" rows=9
+
+          view class="control-group" classNameBindings="errors.heroAssetName:error"
+            label.control-label for="page-heroAssetName"
+              | Hero Asset
+              i.fa.fa-question-circle data-toggle="tooltip" data-placement="top" title="Enter the name of the asset here. Can be used for leading images, or a thumbnail image in page lists."
+              if errors.heroAssetName: span.help-inline=errors.heroAssetName
+            .controls
+              Ember.TextField#page-heroAssetName.input-block-level valueBinding="heroAssetName"
+
+
+  .extras
+    unless isHtml
+      .non-html-message
+        p.controls It looks like you're working on a <strong>.{{pathExtension}}</strong> page. Head tags and themes only apply to html pages (ending in .htm or .html, or having no extension at all).
+
+    fieldset class={isHtml::blur :meta}
+      legend Head Tags
+      .row-fluid
+        .span6
+          view class="control-group"
+            label.control-label for="page-metaDescription"
+              | Meta Description
+              i.fa.fa-question-circle data-toggle="tooltip" data-placement="top" title="A short and accurate summary of the page's content."
+              if errors.metaTags.description: span.help-inline= errors.metaTags.description
+            .controls
+              Ember.TextField#page-metaDescription.input-block-level valueBinding="metaTagsProxy.description" placeholder="eg: Apply now for an installment loan"
+
+          view class="control-group"
+            label.control-label for="page-metaKeywords"
+              | Meta Keywords
+              i.fa.fa-question-circle data-toggle="tooltip" data-placement="top" title="Relevant words associated with the page's content, separated by commas."
+              if errors.metaTags.keywords: span.help-inline= errors.metaTags.keywords
+            .controls
+              Ember.TextField#page-metaKeywords.input-block-level valueBinding="metaTagsProxy.keywords" placeholder="eg: installment loans, loans, cash"
+
+          view class="control-group meta-robots"
+            label.control-label for="page-metaRobots"
+              | Meta Robots
+              i.fa.fa-question-circle data-toggle="tooltip" data-placement="top" title="Tell search engine crawlers what they may not do."
+              if errors.metaTags.robots: span.help-inline= errors.metaTags.robots
+            .controls
+              Publicist.RobotDirectivesView valueBinding="metaTagsProxy.robotsProxy"
+
+        .span6
+          view class="control-group"
+            label.control-label for="page-head-content"
+              | Extra Head Content
+              i.fa.fa-question-circle data-toggle="tooltip" data-placement="top" title="Tags to be included in your theme's <head> section. Dont forget to close your tags!"
+            .controls
+              Ember.TextArea#page-head-content.input-block-level valueBinding="headContent" placeholder="<link rel='alternate' type='application/rss+xml' title='RSS' href='/rss'></link>" rows=6
+
+    fieldset class={isHtml::blur :meta}
+      legend Audit Flags
+      .row-fluid
+        .span6
+          view class="control-group audit-flags"
+            label.control-label for="page-auditFlags"
+              | Audit Flags
+              i.fa.fa-question-circle data-toggle="tooltip" data-placement="top" title="Flag for use from the list of available audits"
+              if errors.auditFlags.flags: span.help-inline= errors.auditFlags.flags
+            .controls
+              Publicist.AuditDirectivesView directivesBinding="auditFlags"
+
+    fieldset class={isHtml::blur :themes}
+      legend Theme
+      Publicist.ThemeSelectionView contentBinding="activeThemes"

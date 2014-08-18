@@ -1,0 +1,39 @@
+.asset-panel-inner.padded
+  .asset-panel-header
+    a.close.pull-right data-toggle="panel" &times;
+
+    .pull-left
+      h4 Assets
+
+    .asset-search.pull-right
+      Ember.TextField#assets-search type="search" valueBinding=searchTerm placeholder="Search for an asset..." class="input-xlarge"
+
+  if searchTerm
+    if searchResults.isPending
+      partial "loading"
+    else
+      if searchResults
+        table.table.table-striped.assets
+          thead
+            tr
+              th File
+              th Insert
+          tbody
+            each asset in searchResults
+              tr.asset data-toggle="tooltip" title="<span class='asset-preview-content'>{{unbound asset.previewContent}}</span>" data-placement="left" data-html="true" data-container="body"
+                td
+                  .link: link-to 'asset' asset
+                    | <i class="{{unbound iconName}}"></i> {{asset.name}}
+                  .author Uploaded by {{author.fullName}} {{relativeTime asset.createdAt}}
+                td width="10%"
+                  .actions data-asset-name=asset.name
+                    .btn-group
+                      if asset.isImage
+                        a.btn.btn-default.btn-small data-insert-tag="img_tag" Image
+                      a.btn.btn-default.btn-small data-insert-tag="asset_url" URL
+                      a.btn.btn-default.btn-small data-insert-tag="asset_description" Description
+      else
+        p No assets matched your search.
+
+  else
+    p.muted Enter a search term to find an asset.

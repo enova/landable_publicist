@@ -1,0 +1,17 @@
+.navbar.navbar-top.navbar-inverse: .navbar-inner: .container-fluid
+  a.brand href="#"
+    Publicist
+
+  ul.nav.pull-left
+    view Publicist.ActiveWrapperView
+      link-to 'directories' | Pages
+    view Publicist.ActiveWrapperView
+      link-to 'themes' | Themes
+    view Publicist.ActiveWrapperView
+      link-to 'templates' | Templates
+    view Publicist.ActiveWrapperView
+      link-to 'assets' | Assets
+    view Publicist.ActiveWrapperView
+      link-to 'audits' | Audits
+
+.container-fluid= outlet

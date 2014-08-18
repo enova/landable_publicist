@@ -1,0 +1,13 @@
+#restore-modal.modal.hide.fade
+  .modal-header
+    a.close data-dismiss="modal" &times;
+    h4
+      | Restoring #{model.path}
+
+  .modal-body
+    form submit="reactivate model"
+      p <strong> Are you sure?
+
+  .modal-footer
+    a.btn.btn-default data-dismiss="modal" Cancel
+    button.btn.btn-primary click="reactivate" Restore

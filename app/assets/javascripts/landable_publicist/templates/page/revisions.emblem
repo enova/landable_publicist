@@ -1,0 +1,63 @@
+.padded
+  if revisions.isPending
+    partial "loading"
+  else
+    unless revisions
+      .alert.alert-info
+        p
+          strong This page has not yet been published
+          | , and there are no revisions to show.
+        p Use the <strong>Publish</strong> button at the lower right to create the first published revision.
+    else
+      table.table.table-striped.revisions
+        thead
+          tr
+            th Revision
+            th Live From
+            th Live To
+            th Notes
+            th Tools
+        tbody
+          each revision in revisions
+            tr
+              td.span2
+                div
+                  a href=revision.previewUrl target="preview"
+                    strong ##{revision.ordinal}
+                    |  (click to preview)
+                  if revision.isMinor
+                    / sorry
+                    span.muted &nbsp; (minor)
+                .muted
+                  | by&nbsp;
+                  strong #{revision.author.username}
+              td.span1
+                | #{revision.createdAtReadableShort}
+                br
+                | #{revision.createdAtReadableTime}
+              td.span1
+                if revision.isPublished
+                  div title="Currently Published"
+                    | (current)
+                else
+                  | #{revision.updatedAtReadableShort}
+                  br
+                  | #{revision.updatedAtReadableTime}
+              td.span4
+                if revision.notes
+                  revision.notes
+                else
+                  .muted (no notes)
+              td.span2
+                ul.toolbar
+                  if isDirty
+                    li: a.btn.btn-blue.btn-small.disabled data-toggle="tooltip" data-placement="left" title="Save your changes before you reload the draft." Reload
+                  else
+                    li: a.btn.btn-blue.btn-small.revert data-toggle="modal" data-target="#revision-revert-modal" click="setTargetPageRevision revision" Reload
+                  li: button type="button" class="btn btn-default btn-small" data-toggle="modal" data-target=".pageRevision-testing-modal[data-id={{unbound revision.id}}]" Device Testing
+
+      .modals
+        each revision in revisions
+          render page_revision.testing revision
+
+render page.revert

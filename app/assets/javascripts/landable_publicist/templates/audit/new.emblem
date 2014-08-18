@@ -1,0 +1,31 @@
+#audit-modal.modal.hide.fade
+  .modal-header
+    a.close data-dismiss="modal" &times;
+    h4
+      | Conduct Your Audit!
+
+  .modal-body
+    form submit="audit"
+      | ** means required!
+      .control-group
+        label.control-label
+          | Notes
+        .controls
+          Ember.TextArea class="input-block-level notes" valueBinding="audit.notes"
+
+      .control-group
+        label.control-label
+          | Flags
+        .controls
+          Publicist.AuditDirectivesView directivesBinding="audit.flags"
+
+      view class="control-group" classNameBindings="errors.approver:error"
+        label.control-label.approver for="audit-approver"
+          | ** Page Approved By
+          if errors.approver: span.help-inline= errors.approver
+        .controls.approver-value
+          Publicist.TextField class="input-block-level approver-input" required="required" valueBinding="audit.approver"
+
+  .modal-footer
+    a.btn.btn-default data-dismiss="modal" Cancel
+    button.btn.btn-primary click="createAudit" Audit

@@ -1,0 +1,31 @@
+.padded
+  if errors
+    .alert.alert-error
+      h4 There was a problem during rendering!
+      ul
+        each error in errors
+          li
+            | <strong>{{error.key}}</strong>: {{error.value}}
+  else
+    if preview
+      .pull-right
+        ul.toolbar
+          li
+            a.btn.btn-blue data-toggle="tooltip" data-placement="top" title="Click to see how your page will look on a mobile devices (ie width=480px)" click="mobile"
+              i.fa.fa-mobile.fa-4x
+
+          li
+            a.btn.btn-blue data-toggle="tooltip" data-placement="top" title="Click to see how your page will look on a tablet devices (ie width=768px)" click="tablet"
+              i.fa.fa-tablet.fa-4x
+
+          li
+            a.btn.btn-blue data-toggle="tooltip" data-placement="top" title="Click to see how your page will look on medium devices (ie width=990px)" click="laptop"
+              i.fa.fa-laptop.fa-4x
+
+          li
+            a.btn.btn-blue data-toggle="tooltip" data-placement="top" title="Click to see how your page will look on a large devices (ie width=1200px)" click="desktop"
+              i.fa.fa-desktop.fa-4x
+
+      iframe.preview-frame name="preview" seamless="seamless" srcdoc=preview
+    else
+      partial "loading"

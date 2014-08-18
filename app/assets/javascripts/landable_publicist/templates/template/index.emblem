@@ -1,0 +1,45 @@
+.padded
+  .row-fluid
+    view class="control-group" classNameBindings="errors.name:error"
+      label.control-label for="template-name"
+        | Name
+        if errors.name: span.help-inline= errors.name
+      .controls
+        Ember.TextField#template-name.input-block-level valueBinding="name" tabindex=1
+
+    view class="control-group" classNameBindings="errors.description:error"
+      label.control-label for="template-description"
+        | Description
+        if errors.description: span.help-inline= errors.description
+      .controls
+        Ember.TextArea#template-description.input-block-level valueBinding="description" tabindex=3
+
+    view class="control-group audit-flags"
+      label.control-label for="template-auditFlags"
+        | Audit Flags
+        i.fa.fa-question-circle data-toggle="tooltip" data-placement="top" title="Flag for use from the list of available audits"
+        if errors.auditFlags.flags: span.help-inline= errors.auditFlags.flags
+      .controls
+        Publicist.AuditDirectivesView directivesBinding="auditFlags"
+
+    view class="control-group"
+      label.control-label for="template-thumbnail-url" Thumbnail URL
+      .controls
+        Ember.TextField#template-thumbnail-url.input-block-level valueBinding="thumbnailUrl" tabindex=4
+
+    view class="control-group"
+      .controls
+        label
+          view Ember.Checkbox checkedBinding=isLayout tabindex=5
+          | This template provides a starter layout for a new page.
+
+    view class="control-group" classNameBindings="errors.slug:error isLayout:disabled"
+      label.control-label for="template-slug"
+        | Slug
+        i.fa.fa-question-circle data-toggle="tooltip" data-placement="top" title="Used when dynamically inserting this template into a page (e.g. {% template some_template_slug %}" data-container="body"
+        if errors.slug: span.help-inline= errors.slug
+      .controls
+        if isNew
+          Ember.TextField#template-slug.input-block-level valueBinding="slug" tabindex=6
+        else
+          input type="text" readonly="readonly" value=slug

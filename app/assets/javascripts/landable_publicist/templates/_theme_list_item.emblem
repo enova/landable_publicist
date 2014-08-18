@@ -1,0 +1,14 @@
+link-to 'theme' this class="page"
+
+  if isLoaded
+    if isDeactivated
+      span.icon.trash: i.fa.fa-eye-slash data-toggle="tooltip" title="Trashed"
+
+  span.path
+    if isLoaded
+      if name
+        = name
+      else
+        span.muted (index theme)
+    else
+      | ...

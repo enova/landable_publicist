@@ -1,0 +1,34 @@
+.pages.search: .container-fluid.padded
+
+  .header
+    .pull-left
+      ul.path-browser.crumbs
+        li
+          link-to 'directories.index'
+            i.fa.fa-home title="Home"
+        li.search-path-container
+          Ember.TextField .search-path.input-xxlarge valueBinding=searchPath placeholder="Type to search."
+
+    .pull-right
+      button.btn.btn-blue click="back"
+        i.fa.fa-chevron-left
+        span Go back
+
+  .box
+    .box-content
+      .meta
+        if searchResults
+          p Showing {{searchResults.length}} of {{searchMeta.total_results}} results.
+        else
+          if searchPath
+            if searchResults.isPending
+              partial "loading"
+            else
+              p
+                span No results found.
+                a.create-page click="createPage" Create a page with this path?
+
+          else
+            p.muted Search for pages by their URL path. For example, type "aff_" to search for all pages that start with "/aff_".
+
+      collection Publicist.ListView contentBinding="searchResults" itemTemplateName="_search_page_list_item"

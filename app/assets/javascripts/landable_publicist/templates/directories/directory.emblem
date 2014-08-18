@@ -1,0 +1,68 @@
+.directories.directory: .container-fluid.padded
+
+  .header
+    .pull-left
+      ul.path-browser.crumbs
+        if model.parents.isPending
+          li: link-to: i.fa.fa-spinner.fa.fa-spin.muted
+        else
+          each parentDirectory in model.parents
+            li
+              link-to 'directories.directory' parentDirectory
+                if parentDirectory.name
+                  parentDirectory.name
+                else
+                  i.fa.fa-home title="Home"
+
+    .pull-right
+      ul.toolbar
+        li
+          link-to 'pages.search'
+            span.btn.btn-default data-toggle="tooltip" data-placement="left" title="You can also hit T to search"
+              i.fa.fa-search
+              span Search
+
+        li
+          link-to 'pages.new' class="btn btn-blue" | New Page
+
+  .box
+    .box-content.list-filter-box
+      unless model.isLoaded
+        partial "loading"
+      else
+        collection Publicist.ListView contentBinding="model.subdirectories" class="directory-list" emptyTemplate="No subdirectories." itemTemplateName="_directory_list_item"
+
+        if model.pages
+          ul.list-filters
+            li data-toggle="tooltip" data-delay="500" title="Filter by flags"
+                Publicist.Select selectElementId="filter-by-flags" contentBinding="Publicist.auditFlags" optionValuePath="content" optionLabelPath="content" valueBinding="filters.auditFlag" prompt="(all flags)"
+
+            li data-toggle="tooltip" data-delay="500" title="Filter by category"
+                Publicist.Select selectElementId="filter-by-category" contentBinding="Publicist.availableCategories" optionValuePath="content" optionLabelPath="content.name" valueBinding="filters.category" prompt="(all categories)"
+
+            li data-toggle="tooltip" data-delay="500" title="Filter by theme"
+                Publicist.Select selectElementId="filter-by-theme" contentBinding="Publicist.availableThemes" optionValuePath="content" optionLabelPath="content.name" valueBinding="filters.theme" prompt="(all themes)"
+
+            li
+              label data-toggle="tooltip" data-delay="500" title="Show '200 Okay' pages" class=filters.isOkay::muted
+                view Ember.Checkbox checkedBinding=filters.isOkay
+                span class={:icon filters.isOkay:okay}
+                  i.fa.fa-check-circle
+            li
+              label data-toggle="tooltip" data-delay="500" title="Show '30x Redirect' pages" class=filters.isRedirect::muted
+                view Ember.Checkbox checkedBinding=filters.isRedirect
+                span class={:icon filters.isRedirect:redirect}
+                  i.fa.fa-arrow-circle-right
+            li
+              label data-toggle="tooltip" data-delay="500" title="Show '410 Gone' pages" class=filters.isMissing::muted
+                view Ember.Checkbox checkedBinding=filters.isMissing
+                span class={:icon filters.isMissing:missing}
+                  i.fa.fa-minus-circle
+
+            li
+              label data-toggle="tooltip" data-delay="500" title="Show deleted pages" class=filters.isDeactivated::muted
+                view Ember.Checkbox checkedBinding=filters.isDeactivated
+                span class={:icon filters.isDeactivated:trash}
+                  i.fa.fa-eye-slash
+
+        collection Publicist.ListView contentBinding="filteredPages" class="page-list" emptyTemplate="Choose a subdirectory." itemTemplateName="_page_list_item"

@@ -1,0 +1,56 @@
+## Extensions that should not make it into production
+
+<% if Rails.env.development? %>
+# Turn on lots of logging.
+# See:
+# - http://blog.emberwatch.com/2013/06/13/logging-the-magic-in-ember-js.html
+# - http://blog.emberwatch.com/2013/06/18/logging-in-the-ember-js-namespace.html
+Ember.LOG_STACKTRACE_ON_DEPRECATION = true
+# Ember.LOG_BINDINGS = true # this was just way too much ...
+Publicist.reopen(
+  LOG_TRANSITIONS: true
+  LOG_ACTIVE_GENERATION: true
+  LOG_VIEW_LOOKUPS: true
+  LOG_TRANSITIONS_INTERNAL: true
+)
+<% end %>
+
+<% unless Rails.env.production? %>
+window.Pb = ((app) ->
+  container = app.__container__
+  helper =
+    lookup: (v) -> container.lookup(v)
+    router:     -> helper.lookup('router:main')
+    lastSetURL: -> helper.router().location.lastSetURL
+
+    controller: (name) -> helper.lookup("controller:#{name}")
+    appController:     -> helper.controller('application')
+
+    route: (name) ->
+      if name?
+        helper.lookup("route:#{name}")
+      else
+        helper.currentRoute()
+
+    currentPath:  -> helper.controller('application').get('currentPath')
+    currentModel: -> helper.currentRoute().get('currentModel')
+    currentRoute: ->
+      info = Pb.router().router.currentHandlerInfos
+      info[info.length - 1].handler
+
+
+    navigateTo: (url) ->
+      helper.router().handleURL(url)
+
+    transitionTo: (args...) ->
+      helper.router().transitionTo.apply(helper.router(), args)
+)(Publicist)
+
+HTMLElement.prototype.view = ->
+  el =
+    if @classList.contains('ember-view')
+      this
+    else
+      $(this).parents('.ember-view')[0]
+  Ember.View.views[el.id]
+<% end %>

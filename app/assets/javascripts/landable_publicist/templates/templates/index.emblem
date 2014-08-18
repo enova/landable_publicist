@@ -1,0 +1,31 @@
+.themes.index: .container-fluid.padded
+  .header
+    .pull-left
+      ul.path-browser.crumbs
+        li
+          i.fa.fa-eye
+          link-to 'templates.index' | Templates
+    .pull-right
+      link-to 'templates.new' class="btn btn-blue" | New Template
+
+  .box
+    .box-content.list-filter-box
+      unless model.isLoaded
+        partial 'loading'
+      else
+        ul.list-filters
+          li data-toggle="tooltip" data-delay="500" title="Filter by flags"
+              Publicist.Select selectElementId="filter-by-flags" contentBinding="Publicist.auditFlags" optionValuePath="content" optionLabelPath="content" valueBinding="filters.auditFlag" prompt="(all flags)"
+
+          li data-toggle="tooltip" data-delay="500" title="Filter by category"
+            Publicist.Select selectElementId="filter-by-category" contentBinding="Publicist.availableCategories" optionValuePath="content" optionLabelPath="content.name" valueBinding="filters.category" prompt="(all categories)"
+
+          li data-toggle="tooltip" data-delay="500" title="Filter by theme"
+            Publicist.Select selectElementId="filter-by-theme" contentBinding="Publicist.availableThemes" optionValuePath="content" optionLabelPath="content.name" valueBinding="filters.theme" prompt="(all themes)"
+          li
+            label data-toggle="tooltip" data-delay="500" title="Show deleted templates" class=filters.isDeactivated::muted
+              view Ember.Checkbox checkedBinding=filters.isDeactivated
+              span class={:icon filters.isDeactivated:trash}
+                i.fa.fa-eye-slash
+
+        collection Publicist.ListView contentBinding="filteredTemplates" class="page-list" emptyTemplate="Choose a subdirectory." itemTemplateName="_template_list_item"
